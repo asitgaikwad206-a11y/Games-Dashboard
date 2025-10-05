@@ -85,4 +85,6 @@ Version Control	Git, GitHub
 🌐 Connect With me
 💼 LinkedIn: [https://www.linkedin.com/in/asit-gaikwad/]
 
-🌍 Website / Portfolio: [Your Website Link]
+🌍 Website / Portfolio: [https://asitportfolio.lovable.app/]
+
+💻 Tableau Link: [https://public.tableau.com/app/profile/asit.gaikwad/viz/Games-Dashboard_17594291792200/D-7]
