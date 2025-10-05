@@ -82,7 +82,8 @@ Database / Querying	SQL for insights extraction
 IDE / Environment	Jupyter / Colab
 Version Control	Git, GitHub
 
-🌐 Connect With me
+🌐 Connect With me:
+
 💼 LinkedIn: [https://www.linkedin.com/in/asit-gaikwad/]
 
 🌍 Website / Portfolio: [https://asitportfolio.lovable.app/]
