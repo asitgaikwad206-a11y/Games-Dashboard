@@ -18,7 +18,86 @@ WITH regional_totals AS (
 )
 SELECT
     region,
-    ROUND(total_sales, 1) AS sales_millions,
-    ROUND(total_sales * 100.0 / SUM(total_sales) OVER (), 1) AS percentage_share
+    ROUND(Total Sales, 1) AS sales_millions,
+    ROUND(Total Sales * 100.0 / SUM(total_sales) OVER (), 1) AS percentage_share
 FROM unpivoted
-ORDER BY total_sales DESC;
+ORDER BY Total Sales DESC;
+
+#Console top Sales
+SELECT
+    console,
+    ROUND(SUM(Total Sales), 2) AS Total_Sales,
+    ROUND(AVG(TotalcSales), 2) AS Avg_Sales_Per_Game,
+    COUNT(title) AS Game_Count,
+    ROUND(AVG(critic_score), 2) AS Avg_Critic_Score
+FROM vgchartz_2024
+WHERE Total Sales IS NOT NULL
+GROUP BY console
+ORDER BY Total_Sales DESC
+LIMIT 12;
+
+#Best Selling Game for each console
+SELECT v.console,
+       v.title AS Best_Game,
+       v.genre,
+       v.publisher,
+       v.total_sales AS Best_Sales
+FROM vgchartz_2024 v
+JOIN (
+    SELECT console, MAX(total_sales) AS MaxSales
+    FROM vgchartz_2024
+    WHERE Total Sales IS NOT NULL
+    GROUP BY console
+) m
+ON v.console = m.console AND v.total_sales = m.MaxSales
+ORDER BY m.MaxSales DESC
+LIMIT 10;
+
+#Top Games by sales
+
+SELECT
+    title,
+    console,
+    genre,
+    publisher,
+    ROUND(Total sales, 2) AS Total_Sales,
+    ROUND(na_sales, 2) AS NA_Sales,
+    ROUND(jp_sales, 2) AS JP_Sales,
+    ROUND(pal_sales, 2) AS PAL_Sales,
+    ROUND(other_sales, 2) AS Other_Sales
+FROM vgchartz_2024
+WHERE Total Sales IS NOT NULL
+ORDER BY total_sales DESC
+LIMIT 10;
+
+#top genres by sales
+
+SELECT
+    genre,
+    ROUND(SUM(total_sales), 2) AS Total_Sales
+FROM vgchartz_2024
+WHERE Total Sales IS NOT NULL
+GROUP BY genre
+ORDER BY Total Sales DESC
+LIMIT 10;
+
+#analysis of chart by KPI
+#consoles with 1million + sales
+SELECT 
+    COUNT(DISTINCT console) AS Consoles_Above_1M
+FROM vgchartz_2024
+GROUP BY console
+HAVING SUM(Total Sales) > 1.0;
+
+#games above 1million+ sales
+SELECT 
+    COUNT(*) AS Games_Above_1M
+FROM vgchartz_2024
+WHERE Total Sales > 1.0;
+
+#gneres with 1million+ sales
+SELECT 
+    COUNT(DISTINCT genre) AS Genres_Above_1M
+FROM vgchartz_2024
+GROUP BY genre
+HAVING SUM(Total Sales) > 1.0;
