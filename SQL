@@ -1,0 +1,24 @@
+#regional total
+WITH regional_totals AS (
+    SELECT
+        SUM(CAST(na_sales AS FLOAT)) AS north_america_sales,
+        SUM(CAST(jp_sales AS FLOAT)) AS japan_sales,
+        SUM(CAST(pal_sales AS FLOAT)) AS pal_sales,
+        SUM(CAST(other_sales AS FLOAT)) AS other_sales
+    FROM vgchartz_2024
+)
+, unpivoted AS (
+    SELECT 'North America' AS region, north_america_sales AS total_sales FROM regional_totals
+    UNION ALL
+    SELECT 'Japan', japan_sales FROM regional_totals
+    UNION ALL
+    SELECT 'PAL (Europe/Australia)', pal_sales FROM regional_totals
+    UNION ALL
+    SELECT 'Other Regions', other_sales FROM regional_totals
+)
+SELECT
+    region,
+    ROUND(total_sales, 1) AS sales_millions,
+    ROUND(total_sales * 100.0 / SUM(total_sales) OVER (), 1) AS percentage_share
+FROM unpivoted
+ORDER BY total_sales DESC;
